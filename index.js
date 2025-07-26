@@ -34,7 +34,7 @@ app.post('/webhook', async (req, res) => {
               contents: [
                 {
                   type: 'text',
-                  text: 'รายงานประจำเดือน',
+                  text: 'เอกสารประกอบการบรรยาย',
                   weight: 'bold',
                   size: 'xl'
                 },
@@ -59,7 +59,7 @@ app.post('/webhook', async (req, res) => {
                   action: {
                     type: 'uri',
                     label: '📥 ดาวน์โหลด PDF',
-                    uri: 'https://raw.githubusercontent.com/tatumza/line-bot-pdf/main/final%20%20TRL%20%20.pdf'
+                    uri: 'https://drive.google.com/uc?export=download&id=1Mtg6kIMZyT0v2kHUfuuVuh70OOkJmMKZ'
                   }
                 }
               ]
