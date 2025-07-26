@@ -2,10 +2,7 @@ const express = require('express');
 const axios = require('axios');
 const app = express();
 
-// ตั้งค่าจาก Environment Variables
 const LINE_TOKEN = process.env.LINE_TOKEN;
-const PDF_URL = process.env.PDF_URL || "https://raw.githubusercontent.com/tatumza/line-bot-pdf/main/final%20%20TRL%20%20.pdf";
-const PDF_SIZE = parseInt(process.env.PDF_SIZE || '631070'); // ขนาดจริงของไฟล์ PDF
 
 app.use(express.json());
 
@@ -16,55 +13,94 @@ app.post('/webhook', async (req, res) => {
     if (event.type === 'message' && event.message.type === 'text') {
       const text = event.message.text.trim();
 
-      if (text === '1A') {
-        // ตอบกลับเป็นไฟล์ PDF
-        try {
-          await axios.post(
-            'https://api.line.me/v2/bot/message/reply',
-            {
-              replyToken: event.replyToken,
-              messages: [
+      if (text === '1') {
+        // ✅ ตอบกลับด้วย Flex Message
+        const flexMessage = {
+          type: 'flex',
+          altText: '📄 ดาวน์โหลดรายงาน PDF',
+          contents: {
+            type: 'bubble',
+            hero: {
+              type: 'image',
+              url: 'https://cdn-icons-png.flaticon.com/512/337/337946.png',
+              size: 'full',
+              aspectRatio: '1.51:1',
+              aspectMode: 'cover'
+            },
+            body: {
+              type: 'box',
+              layout: 'vertical',
+              spacing: 'md',
+              contents: [
                 {
-                  type: 'file',
-                  fileName: 'final_TRL.pdf',
-                  fileSize: PDF_SIZE,
-                  fileUrl: PDF_URL
+                  type: 'text',
+                  text: 'รายงานประจำเดือน',
+                  weight: 'bold',
+                  size: 'xl'
+                },
+                {
+                  type: 'text',
+                  text: 'กดปุ่มด้านล่างเพื่อดาวน์โหลดไฟล์ PDF',
+                  wrap: true,
+                  size: 'sm',
+                  color: '#888888'
                 }
               ]
             },
-            {
-              headers: {
-                Authorization: `Bearer ${LINE_TOKEN}`,
-                'Content-Type': 'application/json'
-              }
+            footer: {
+              type: 'box',
+              layout: 'vertical',
+              spacing: 'sm',
+              contents: [
+                {
+                  type: 'button',
+                  style: 'primary',
+                  color: '#00B900',
+                  action: {
+                    type: 'uri',
+                    label: '📥 ดาวน์โหลด PDF',
+                    uri: 'https://raw.githubusercontent.com/tatumza/line-bot-pdf/main/final%20%20TRL%20%20.pdf'
+                  }
+                }
+              ]
             }
-          );
-        } catch (error) {
-          console.error('❌ Error sending PDF:', error.response?.data || error.message);
-        }
+          }
+        };
+
+        // ส่ง Flex Message
+        await axios.post(
+          'https://api.line.me/v2/bot/message/reply',
+          {
+            replyToken: event.replyToken,
+            messages: [flexMessage]
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${LINE_TOKEN}`,
+              'Content-Type': 'application/json'
+            }
+          }
+        );
       } else {
-        // ตอบกลับข้อความทั่วไป
-        try {
-          await axios.post(
-            'https://api.line.me/v2/bot/message/reply',
-                {
-                  type: 'file',
-                  fileName: 'final_TRL.pdf',
-                  fileSize: PDF_SIZE,
-                  fileUrl: PDF_URL
-                }
-              ]
-            },
-            {
-              headers: {
-                Authorization: `Bearer ${LINE_TOKEN}`,
-                'Content-Type': 'application/json'
+        // ตอบทั่วไป
+        await axios.post(
+          'https://api.line.me/v2/bot/message/reply',
+          {
+            replyToken: event.replyToken,
+            messages: [
+              {
+                type: 'text',
+                text: 'พิมพ์ "1" เพื่อรับรายงาน PDF'
               }
+            ]
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${LINE_TOKEN}`,
+              'Content-Type': 'application/json'
             }
-          );
-        } catch (error) {
-          console.error('❌ Error sending text reply:', error.response?.data || error.message);
-        }
+          }
+        );
       }
     }
   }
