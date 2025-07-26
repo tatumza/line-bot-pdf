@@ -4,8 +4,8 @@ const app = express();
 
 // ตั้งค่าจาก Environment Variables
 const LINE_TOKEN = process.env.LINE_TOKEN;
-const PDF_URL = process.env.PDF_URL;
-const PDF_SIZE = parseInt(process.env.PDF_SIZE || '1048576'); // default 1MB
+const PDF_URL = process.env.PDF_URL || "https://raw.githubusercontent.com/tatumza/line-bot-pdf/main/final%20%20TRL%20%20.pdf";
+const PDF_SIZE = parseInt(process.env.PDF_SIZE || '631070'); // ขนาดจริงของไฟล์ PDF
 
 app.use(express.json());
 
@@ -18,46 +18,54 @@ app.post('/webhook', async (req, res) => {
 
       if (text === '1') {
         // ตอบกลับเป็นไฟล์ PDF
-        await axios.post(
-          'https://api.line.me/v2/bot/message/reply',
-          {
-            replyToken: event.replyToken,
-            messages: [
-              {
-                type: 'file',
-                fileName: 'รายงาน.pdf',
-                fileSize: PDF_SIZE,
-                fileUrl: PDF_URL
+        try {
+          await axios.post(
+            'https://api.line.me/v2/bot/message/reply',
+            {
+              replyToken: event.replyToken,
+              messages: [
+                {
+                  type: 'file',
+                  fileName: 'final_TRL.pdf',
+                  fileSize: PDF_SIZE,
+                  fileUrl: PDF_URL
+                }
+              ]
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${LINE_TOKEN}`,
+                'Content-Type': 'application/json'
               }
-            ]
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${LINE_TOKEN}`,
-              'Content-Type': 'application/json'
             }
-          }
-        );
+          );
+        } catch (error) {
+          console.error('❌ Error sending PDF:', error.response?.data || error.message);
+        }
       } else {
         // ตอบกลับข้อความทั่วไป
-        await axios.post(
-          'https://api.line.me/v2/bot/message/reply',
-          {
-            replyToken: event.replyToken,
-            messages: [
-              {
-                type: 'text',
-                text: 'พิมพ์ "1" เพื่อรับไฟล์ PDF รายงานครับ'
+        try {
+          await axios.post(
+            'https://api.line.me/v2/bot/message/reply',
+            {
+              replyToken: event.replyToken,
+              messages: [
+                {
+                  type: 'text',
+                  text: 'พิมพ์ "1" เพื่อรับไฟล์ PDF: final_TRL.pdf'
+                }
+              ]
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${LINE_TOKEN}`,
+                'Content-Type': 'application/json'
               }
-            ]
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${LINE_TOKEN}`,
-              'Content-Type': 'application/json'
             }
-          }
-        );
+          );
+        } catch (error) {
+          console.error('❌ Error sending text reply:', error.response?.data || error.message);
+        }
       }
     }
   }
@@ -66,4 +74,4 @@ app.post('/webhook', async (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Bot running on port ${PORT}`));
+app.listen(PORT, () => console.log(`✅ LINE Bot running on port ${PORT}`));
