@@ -47,7 +47,7 @@ app.post('/webhook', async (req, res) => {
             messages: [
               {
                 type: 'text',
-                text: 'พิมพ์ "1" เพื่อรับไฟล์ PDF รายงานครับ'
+                text: 'พิมพ์ "A" เพื่อรับไฟล์ PDF รายงานครับ'
               }
             ]
           },
