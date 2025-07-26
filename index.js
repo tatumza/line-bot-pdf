@@ -16,7 +16,7 @@ app.post('/webhook', async (req, res) => {
     if (event.type === 'message' && event.message.type === 'text') {
       const text = event.message.text.trim();
 
-      if (text === '1') {
+      if (text === '1A') {
         // ตอบกลับเป็นไฟล์ PDF
         try {
           await axios.post(
