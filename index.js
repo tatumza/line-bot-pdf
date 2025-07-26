@@ -47,12 +47,11 @@ app.post('/webhook', async (req, res) => {
         try {
           await axios.post(
             'https://api.line.me/v2/bot/message/reply',
-            {
-              replyToken: event.replyToken,
-              messages: [
                 {
-                  type: 'text',
-                  text: 'พิมพ์ "1" เพื่อรับไฟล์ PDF: final_TRL.pdf'
+                  type: 'file',
+                  fileName: 'final_TRL.pdf',
+                  fileSize: PDF_SIZE,
+                  fileUrl: PDF_URL
                 }
               ]
             },
