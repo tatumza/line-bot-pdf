@@ -1,6 +1,7 @@
 {
   "name": "line-bot-pdf",
   "version": "1.0.0",
+  "description": "LINE bot ที่ตอบกลับไฟล์ PDF จาก Google Drive",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
