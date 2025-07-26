@@ -2,6 +2,7 @@ const express = require('express');
 const axios = require('axios');
 const app = express();
 
+// ตั้งค่าจาก Environment Variables
 const LINE_TOKEN = process.env.LINE_TOKEN;
 const PDF_URL = process.env.PDF_URL;
 const PDF_SIZE = parseInt(process.env.PDF_SIZE || '1048576'); // default 1MB
@@ -16,7 +17,7 @@ app.post('/webhook', async (req, res) => {
       const text = event.message.text.trim();
 
       if (text === '1') {
-        // ตอบกลับด้วยไฟล์ PDF
+        // ตอบกลับเป็นไฟล์ PDF
         await axios.post(
           'https://api.line.me/v2/bot/message/reply',
           {
@@ -24,7 +25,7 @@ app.post('/webhook', async (req, res) => {
             messages: [
               {
                 type: 'file',
-                fileName: 'finalTRL.pdf',
+                fileName: 'รายงาน.pdf',
                 fileSize: PDF_SIZE,
                 fileUrl: PDF_URL
               }
@@ -38,7 +39,7 @@ app.post('/webhook', async (req, res) => {
           }
         );
       } else {
-        // ตอบข้อความทั่วไป
+        // ตอบกลับข้อความทั่วไป
         await axios.post(
           'https://api.line.me/v2/bot/message/reply',
           {
