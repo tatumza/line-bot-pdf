@@ -16,7 +16,7 @@ app.post('/webhook', async (req, res) => {
     if (event.type === 'message' && event.message.type === 'text') {
       const text = event.message.text.trim();
 
-      if (text === '1') {
+      if (text === 'A') {
         // ตอบกลับเป็นไฟล์ PDF
         await axios.post(
           'https://api.line.me/v2/bot/message/reply',
