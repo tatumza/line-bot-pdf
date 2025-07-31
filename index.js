@@ -22,7 +22,7 @@ app.post('/webhook', async (req, res) => {
             type: 'bubble',
             hero: {
               type: 'image',
-              url: 'https://www.nufthailand.com/pdf/NuFPresentation_V2.pdf',
+              url: 'https://www.nufthailand.com/img/pdflogo.png',
               size: 'full',
               aspectRatio: '1.51:1',
               aspectMode: 'cover'
@@ -59,7 +59,7 @@ app.post('/webhook', async (req, res) => {
                   action: {
                     type: 'uri',
                     label: '📥 ดาวน์โหลด PDF',
-                    uri: 'https://www.nufthailand.com/pdf/finalTRL.pdf'
+                    uri: 'https://www.nufthailand.com/pdf/NuFPresentation_V2.pdf'
                   }
                 }
               ]
