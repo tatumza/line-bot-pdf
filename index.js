@@ -22,7 +22,7 @@ app.post('/webhook', async (req, res) => {
             type: 'bubble',
             hero: {
               type: 'image',
-              url: 'https://www.nufthailand.com/img/pdflogo.png',
+              url: 'https://www.nufthailand.com/pdf/pdflogo.png',
               size: 'full',
               aspectRatio: '1.51:1',
               aspectMode: 'cover'
